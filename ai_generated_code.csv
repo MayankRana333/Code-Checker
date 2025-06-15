@@ -1,0 +1,4410 @@
+code,label
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to print middle of linked list
+void printMiddle(struct Node* head) {
+    struct Node *slow = head;
+    struct Node *fast = head;
+
+    while (fast != NULL && fast->next != NULL) {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    if (slow != NULL)
+        printf(""Middle element: %d\n"", slow->data);
+}
+
+// Function to insert a node at beginning
+void push(struct Node** head_ref, int new_data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Function to print the linked list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    // Creating linked list: 5->4->3->2->1
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 3);
+    push(&head, 4);
+    push(&head, 5);
+
+    printf(""Linked List:\n"");
+    printList(head);
+
+    printMiddle(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to rotate the linked list counter-clockwise by k nodes
+void rotate(struct Node** head_ref, int k) {
+    if (k == 0 || *head_ref == NULL)
+        return;
+
+    struct Node* current = *head_ref;
+
+    int count = 1;
+    while (count < k && current != NULL) {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL)
+        return;
+
+    struct Node* kthNode = current;
+
+    while (current->next != NULL)
+        current = current->next;
+
+    current->next = *head_ref;
+    *head_ref = kthNode->next;
+    kthNode->next = NULL;
+}
+
+// Function to insert at front
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Function to print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    // Creating linked list: 60->50->40->30->20->10
+    push(&head, 10);
+    push(&head, 20);
+    push(&head, 30);
+    push(&head, 40);
+    push(&head, 50);
+    push(&head, 60);
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    rotate(&head, 4);
+
+    printf(""Rotated List:\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Define the node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to delete the middle of linked list
+void deleteMiddle(struct Node** head_ref) {
+    if (*head_ref == NULL || (*head_ref)->next == NULL) {
+        free(*head_ref);
+        *head_ref = NULL;
+        return;
+    }
+
+    struct Node *slow = *head_ref, *fast = *head_ref;
+    struct Node *prev = NULL;
+
+    while (fast != NULL && fast->next != NULL) {
+        fast = fast->next->next;
+        prev = slow;
+        slow = slow->next;
+    }
+
+    prev->next = slow->next;
+    free(slow);
+}
+
+// Function to insert node at front
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Function to print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    // Creating the list: 5->4->3->2->1
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 3);
+    push(&head, 4);
+    push(&head, 5);
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    deleteMiddle(&head);
+
+    printf(""List after deleting middle node:\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to delete N nodes after M nodes
+void deleteNafterM(struct Node* head, int M, int N) {
+    struct Node* current = head;
+    struct Node* temp;
+    int count;
+
+    while (current) {
+        for (count = 1; count < M && current != NULL; count++)
+            current = current->next;
+
+        if (current == NULL)
+            return;
+
+        temp = current->next;
+        for (count = 1; count <= N && temp != NULL; count++) {
+            struct Node* t = temp;
+            temp = temp->next;
+            free(t);
+        }
+
+        current->next = temp;
+        current = temp;
+    }
+}
+
+// Function to insert node at beginning
+void push(struct Node** head_ref, int new_data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Function to print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    // Create list: 10->9->8->7->6->5->4->3->2->1
+    for (int i = 1; i <= 10; i++) {
+        push(&head, i);
+    }
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    deleteNafterM(head, 2, 3);
+
+    printf(""Modified List after deleting 3 nodes after every 2 nodes:\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node definition
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to merge alternate nodes of list2 into list1
+void mergeAlternate(struct Node* head1, struct Node* head2) {
+    struct Node* p1 = head1;
+    struct Node* p2 = head2;
+    struct Node* next1;
+    struct Node* next2;
+
+    while (p1 != NULL && p2 != NULL) {
+        next1 = p1->next;
+        next2 = p2->next;
+
+        p1->next = p2;
+        p2->next = next1;
+
+        p1 = next1;
+        p2 = next2;
+    }
+}
+
+// Function to push node at head
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function
+int main() {
+    struct Node* head1 = NULL;
+    struct Node* head2 = NULL;
+
+    // List1: 5->3->1
+    push(&head1, 1);
+    push(&head1, 3);
+    push(&head1, 5);
+
+    // List2: 6->4->2
+    push(&head2, 2);
+    push(&head2, 4);
+    push(&head2, 6);
+
+    printf(""Original List1:\n"");
+    printList(head1);
+    printf(""Original List2:\n"");
+    printList(head2);
+
+    mergeAlternate(head1, head2);
+
+    printf(""Merged List:\n"");
+    printList(head1);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to detect loop using Floyd’s Cycle-Finding Algorithm
+int detectLoop(struct Node* head) {
+    struct Node *slow = head, *fast = head;
+
+    while (slow && fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            return 1; // Loop found
+        }
+    }
+    return 0;
+}
+
+// Insert node at front
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    // Create linked list: 3->2->0->-4
+    push(&head, -4);
+    push(&head, 0);
+    push(&head, 2);
+    push(&head, 3);
+
+    // Create loop for testing: link last node to second node
+    head->next->next->next->next = head->next;
+
+    if (detectLoop(head))
+        printf(""Loop detected in linked list\n"");
+    else
+        printf(""No loop in linked list\n"");
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to remove duplicates from sorted list
+void removeDuplicates(struct Node* head) {
+    struct Node* current = head;
+
+    while (current != NULL && current->next != NULL) {
+        if (current->data == current->next->data) {
+            struct Node* next_next = current->next->next;
+            free(current->next);
+            current->next = next_next;
+        } else {
+            current = current->next;
+        }
+    }
+}
+
+// Function to insert node at head
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Function to print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    // Sorted list with duplicates: 4->4->3->3->2->1->1
+    push(&head, 1);
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 3);
+    push(&head, 3);
+    push(&head, 4);
+    push(&head, 4);
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    removeDuplicates(head);
+
+    printf(""List after removing duplicates:\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to sort a linked list of 0s, 1s and 2s
+void sortList(struct Node* head) {
+    int count[3] = {0, 0, 0};
+    struct Node* ptr = head;
+
+    while (ptr != NULL) {
+        count[ptr->data]++;
+        ptr = ptr->next;
+    }
+
+    int i = 0;
+    ptr = head;
+    while (ptr != NULL) {
+        if (count[i] == 0)
+            i++;
+        else {
+            ptr->data = i;
+            count[i]--;
+            ptr = ptr->next;
+        }
+    }
+}
+
+// Insert node at head
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Node* head = NULL;
+
+    push(&head, 0);
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 0);
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    sortList(head);
+
+    printf(""Sorted List (0s, 1s, 2s):\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to delete a node without head pointer
+void deleteNode(struct Node* node_ptr) {
+    if (node_ptr == NULL || node_ptr->next == NULL)
+        return;
+
+    struct Node* temp = node_ptr->next;
+    node_ptr->data = temp->data;
+    node_ptr->next = temp->next;
+    free(temp);
+}
+
+// Push node
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Node* head = NULL;
+
+    // Create list: 4->3->2->1
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 3);
+    push(&head, 4);
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    deleteNode(head->next); // Delete node with value 3
+
+    printf(""After deleting a node without head pointer:\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct QNode {
+    int data;
+    struct QNode* next;
+};
+
+// Queue structure
+struct Queue {
+    struct QNode *front, *rear;
+};
+
+// Function to create a new node
+struct QNode* newNode(int k) {
+    struct QNode* temp = (struct QNode*) malloc(sizeof(struct QNode));
+    temp->data = k;
+    temp->next = NULL;
+    return temp;
+}
+
+// Function to create a queue
+struct Queue* createQueue() {
+    struct Queue* q = (struct Queue*) malloc(sizeof(struct Queue));
+    q->front = q->rear = NULL;
+    return q;
+}
+
+// Enqueue function
+void enqueue(struct Queue* q, int k) {
+    struct QNode* temp = newNode(k);
+
+    if (q->rear == NULL) {
+        q->front = q->rear = temp;
+        return;
+    }
+
+    q->rear->next = temp;
+    q->rear = temp;
+}
+
+// Dequeue function
+void dequeue(struct Queue* q) {
+    if (q->front == NULL)
+        return;
+
+    struct QNode* temp = q->front;
+    q->front = q->front->next;
+
+    if (q->front == NULL)
+        q->rear = NULL;
+
+    free(temp);
+}
+
+// Print queue
+void printQueue(struct Queue* q) {
+    struct QNode* temp = q->front;
+    while (temp != NULL) {
+        printf(""%d -> "", temp->data);
+        temp = temp->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Queue* q = createQueue();
+
+    enqueue(q, 10);
+    enqueue(q, 20);
+    enqueue(q, 30);
+
+    printf(""Queue: "");
+    printQueue(q);
+
+    dequeue(q);
+
+    printf(""After dequeue: "");
+    printQueue(q);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to print a circular linked list
+void printCircular(struct Node* head) {
+    if (head == NULL)
+        return;
+
+    struct Node* temp = head;
+    do {
+        printf(""%d -> "", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf(""(head)\n"");
+}
+
+// Insert node at end of circular list
+struct Node* insertEnd(struct Node* head, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    if (head == NULL) {
+        new_node->next = new_node;
+        return new_node;
+    }
+
+    struct Node* temp = head;
+    while (temp->next != head)
+        temp = temp->next;
+
+    temp->next = new_node;
+    new_node->next = head;
+
+    return head;
+}
+
+// Main
+int main() {
+    struct Node* head = NULL;
+
+    head = insertEnd(head, 10);
+    head = insertEnd(head, 20);
+    head = insertEnd(head, 30);
+    head = insertEnd(head, 40);
+
+    printf(""Circular Linked List:\n"");
+    printCircular(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node definition
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to swap nodes pairwise
+void pairwiseSwap(struct Node* head) {
+    struct Node* temp = head;
+
+    while (temp != NULL && temp->next != NULL) {
+        int k = temp->data;
+        temp->data = temp->next->data;
+        temp->next->data = k;
+        temp = temp->next->next;
+    }
+}
+
+// Push to front
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Node* head = NULL;
+
+    push(&head, 6);
+    push(&head, 5);
+    push(&head, 4);
+    push(&head, 3);
+    push(&head, 2);
+    push(&head, 1);
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    pairwiseSwap(head);
+
+    printf(""List after pairwise swap:\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to convert a singly linked list to circular
+void convertToCircular(struct Node* head) {
+    if (head == NULL) return;
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = head;  // Connect last node to head
+}
+
+// Push node to front
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print circular list
+void printCircular(struct Node* head) {
+    if (head == NULL) return;
+
+    struct Node* temp = head;
+    do {
+        printf(""%d -> "", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf(""(head)\n"");
+}
+
+// Main function
+int main() {
+    struct Node* head = NULL;
+
+    push(&head, 5);
+    push(&head, 4);
+    push(&head, 3);
+    push(&head, 2);
+    push(&head, 1);
+
+    convertToCircular(head);
+
+    printf(""Circular Linked List:\n"");
+    printCircular(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to reverse linked list in groups
+struct Node* reverseInGroups(struct Node* head, int k) {
+    struct Node* current = head;
+    struct Node* next = NULL;
+    struct Node* prev = NULL;
+    int count = 0;
+
+    while (current != NULL && count < k) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+        count++;
+    }
+
+    if (next != NULL)
+        head->next = reverseInGroups(next, k);
+
+    return prev;
+}
+
+// Push node
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Node* head = NULL;
+
+    for (int i = 9; i >= 1; i--)
+        push(&head, i);
+
+    printf(""Original List:\n"");
+    printList(head);
+
+    int k = 3;
+    head = reverseInGroups(head, k);
+
+    printf(""Reversed in groups of %d:\n"", k);
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Merge two sorted linked lists
+struct Node* sortedMerge(struct Node* a, struct Node* b) {
+    if (!a) return b;
+    if (!b) return a;
+
+    struct Node* result = NULL;
+
+    if (a->data <= b->data) {
+        result = a;
+        result->next = sortedMerge(a->next, b);
+    } else {
+        result = b;
+        result->next = sortedMerge(a, b->next);
+    }
+
+    return result;
+}
+
+// Push node
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Node* list1 = NULL;
+    struct Node* list2 = NULL;
+
+    push(&list1, 10);
+    push(&list1, 8);
+    push(&list1, 5);
+
+    push(&list2, 9);
+    push(&list2, 6);
+    push(&list2, 3);
+
+    printf(""List 1:\n"");
+    printList(list1);
+    printf(""List 2:\n"");
+    printList(list2);
+
+    struct Node* merged = sortedMerge(list1, list2);
+    printf(""Merged Sorted List:\n"");
+    printList(merged);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Detect loop using Floyd’s Cycle Detection
+int detectLoop(struct Node* head) {
+    struct Node* slow = head;
+    struct Node* fast = head;
+
+    while (slow && fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast)
+            return 1;
+    }
+    return 0;
+}
+
+// Remove loop
+void removeLoop(struct Node* loop_node, struct Node* head) {
+    struct Node* ptr1 = head;
+    struct Node* ptr2;
+
+    while (1) {
+        ptr2 = loop_node;
+
+        while (ptr2->next != loop_node && ptr2->next != ptr1)
+            ptr2 = ptr2->next;
+
+        if (ptr2->next == ptr1)
+            break;
+
+        ptr1 = ptr1->next;
+    }
+
+    ptr2->next = NULL;
+}
+
+// Push node
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Node* head = NULL;
+
+    push(&head, 20);
+    push(&head, 15);
+    push(&head, 10);
+    push(&head, 5);
+
+    head->next->next->next->next = head->next; // Create loop
+
+    if (detectLoop(head)) {
+        printf(""Loop detected.\n"");
+        removeLoop(head->next->next, head);
+        printf(""Loop removed.\n"");
+    }
+
+    printf(""Final Linked List:\n"");
+    printList(head);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to check if list is palindrome
+int isPalindrome(struct Node* head) {
+    int arr[1000];
+    int i = 0;
+
+    while (head) {
+        arr[i++] = head->data;
+        head = head->next;
+    }
+
+    for (int j = 0; j < i / 2; j++) {
+        if (arr[j] != arr[i - j - 1])
+            return 0;
+    }
+
+    return 1;
+}
+
+// Push to list
+void push(struct Node** head_ref, int val) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = val;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print list
+void printList(struct Node* head) {
+    while (head) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main
+int main() {
+    struct Node* head = NULL;
+
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 2);
+    push(&head, 1);
+
+    printList(head);
+
+    if (isPalindrome(head))
+        printf(""The linked list is a palindrome.\n"");
+    else
+        printf(""The linked list is not a palindrome.\n"");
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to remove all occurrences of a pattern list from main list
+struct Node* removeOccurrences(struct Node* head, struct Node* pattern) {
+    if (!pattern) return head;
+
+    struct Node dummy;
+    dummy.next = head;
+    struct Node* prev = &dummy;
+    struct Node* curr = head;
+
+    while (curr) {
+        struct Node* p1 = curr;
+        struct Node* p2 = pattern;
+
+        while (p1 && p2 && p1->data == p2->data) {
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+
+        if (!p2) {
+            prev->next = p1;
+            curr = p1;
+        } else {
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+
+    return dummy.next;
+}
+
+// Push node to front
+void push(struct Node** head_ref, int val) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = val;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Print linked list
+void printList(struct Node* head) {
+    while (head) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function
+int main() {
+    struct Node* mainList = NULL;
+    struct Node* pattern = NULL;
+
+    // Main list: 1->2->3->4->2->3->5->NULL
+    push(&mainList, 5);
+    push(&mainList, 3);
+    push(&mainList, 2);
+    push(&mainList, 4);
+    push(&mainList, 3);
+    push(&mainList, 2);
+    push(&mainList, 1);
+
+    // Pattern: 2->3
+    push(&pattern, 3);
+    push(&pattern, 2);
+
+    printf(""Original List:\n"");
+    printList(mainList);
+
+    mainList = removeOccurrences(mainList, pattern);
+
+    printf(""After removing pattern:\n"");
+    printList(mainList);
+
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Find intersection point of Y shaped linked lists
+int getCount(struct Node* head) {
+    int count = 0;
+    while (head) {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+int getIntersection(int d, struct Node* head1, struct Node* head2) {
+    struct Node* current1 = head1;
+    struct Node* current2 = head2;
+
+    for (int i = 0; i < d; i++) {
+        if (!current1) return -1;
+        current1 = current1->next;
+    }
+
+    while (current1 && current2) {
+        if (current1 == current2)
+            return current1->data;
+        current1 = current1->next;
+        current2 = current2->next;
+    }
+
+    return -1;
+}
+
+int findIntersection(struct Node* head1, struct Node* head2) {
+    int c1 = getCount(head1);
+    int c2 = getCount(head2);
+
+    if (c1 > c2)
+        return getIntersection(c1 - c2, head1, head2);
+    else
+        return getIntersection(c2 - c1, head2, head1);
+}
+
+// Push function
+void push(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Main
+int main() {
+    struct Node* newNode;
+
+    struct Node* head1 = (struct Node*) malloc(sizeof(struct Node));
+    struct Node* head2 = (struct Node*) malloc(sizeof(struct Node));
+
+    head1->data = 10;
+    head2->data = 3;
+
+    struct Node* common = (struct Node*) malloc(sizeof(struct Node));
+    common->data = 15;
+    common->next = (struct Node*) malloc(sizeof(struct Node));
+    common->next->data = 30;
+    common->next->next = NULL;
+
+    head1->next = (struct Node*) malloc(sizeof(struct Node));
+    head1->next->data = 6;
+    head1->next->next = common;
+
+    head2->next = common;
+
+    printf(""The intersection point is %d\n"", findIntersection(head1, head2));
+    return 0;
+}",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node in the linked list
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to print the middle of the linked list
+void printMiddle(struct Node* head) {
+    struct Node* slow_ptr = head;
+    struct Node* fast_ptr = head;
+
+    if (head != NULL) {
+        while (fast_ptr != NULL && fast_ptr->next != NULL) {
+            fast_ptr = fast_ptr->next->next;
+            slow_ptr = slow_ptr->next;
+        }
+        printf(""The middle element is [%d]\n"", slow_ptr->data);
+    }
+}
+
+// Function to push a new node at the beginning
+void push(struct Node** head_ref, int new_data) {
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+// Function to print the linked list
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d -> "", head->data);
+        head = head->next;
+    }
+    printf(""NULL\n"");
+}
+
+// Main function to test printMiddle function
+int main() {
+    struct Node* head = NULL;
+
+    for (int i = 5; i > 0; i--) {
+        push(&head, i);
+        printList(head);
+        printMiddle(head);
+    }
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Structure for a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to determine if two trees are identical
+bool areIdentical(struct Node* root1, struct Node* root2) {
+    // Both trees are empty
+    if (root1 == NULL && root2 == NULL)
+        return true;
+
+    // One tree is empty while other is not
+    if (root1 == NULL || root2 == NULL)
+        return false;
+
+    // Check current node and recurse for left and right subtrees
+    return (root1->data == root2->data) &&
+           areIdentical(root1->left, root2->left) &&
+           areIdentical(root1->right, root2->right);
+}
+
+// Main function to test the identical trees function
+int main() {
+    // Create first tree
+    struct Node* root1 = createNode(1);
+    root1->left = createNode(2);
+    root1->right = createNode(3);
+    root1->left->left = createNode(4);
+    root1->left->right = createNode(5);
+
+    // Create second tree (same as first)
+    struct Node* root2 = createNode(1);
+    root2->left = createNode(2);
+    root2->right = createNode(3);
+    root2->left->left = createNode(4);
+    root2->left->right = createNode(5);
+
+    // Create third tree (different)
+    struct Node* root3 = createNode(1);
+    root3->left = createNode(2);
+    root3->right = createNode(3);
+    root3->left->left = createNode(4);
+
+    printf(""Tree1 and Tree2 are %s
+"", areIdentical(root1, root2) ? ""identical"" : ""not identical"");
+    printf(""Tree1 and Tree3 are %s
+"", areIdentical(root1, root3) ? ""identical"" : ""not identical"");
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to convert a tree to its mirror
+void mirrorTree(struct Node* root) {
+    if (root == NULL)
+        return;
+
+    // Swap left and right children
+    struct Node* temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+
+    // Recurse for subtrees
+    mirrorTree(root->left);
+    mirrorTree(root->right);
+}
+
+// Helper function for inorder traversal
+void inorder(struct Node* root) {
+    if (root == NULL)
+        return;
+    inorder(root->left);
+    printf(""%d "", root->data);
+    inorder(root->right);
+}
+
+// Main function to test mirror tree function
+int main() {
+    // Create a sample tree
+    struct Node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+
+    printf(""Original tree (inorder): "");
+    inorder(root);
+    printf(""
+"");
+
+    mirrorTree(root);
+
+    printf(""Mirror tree (inorder): "");
+    inorder(root);
+    printf(""
+"");
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Structure for a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Helper function to check if two trees are mirror of each other
+bool isMirror(struct Node* root1, struct Node* root2) {
+    if (root1 == NULL && root2 == NULL)
+        return true;
+    if (root1 == NULL || root2 == NULL)
+        return false;
+    return (root1->data == root2->data) &&
+           isMirror(root1->left, root2->right) &&
+           isMirror(root1->right, root2->left);
+}
+
+// Function to check if tree is symmetric (mirror of itself)
+bool isSymmetric(struct Node* root) {
+    return isMirror(root, root);
+}
+
+// Main function to test symmetric tree function
+int main() {
+    // Create a symmetric tree
+    struct Node* root1 = createNode(1);
+    root1->left = createNode(2);
+    root1->right = createNode(2);
+    root1->left->left = createNode(3);
+    root1->left->right = createNode(4);
+    root1->right->left = createNode(4);
+    root1->right->right = createNode(3);
+
+    // Create a non-symmetric tree
+    struct Node* root2 = createNode(1);
+    root2->left = createNode(2);
+    root2->right = createNode(3);
+    root2->left->right = createNode(4);
+    root2->right->right = createNode(5);
+
+    printf(""Tree1 is %s
+"", isSymmetric(root1) ? ""symmetric"" : ""not symmetric"");
+    printf(""Tree2 is %s
+"", isSymmetric(root2) ? ""symmetric"" : ""not symmetric"");
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to calculate diameter of a binary tree
+int diameter(struct Node* root, int* height) {
+    int leftHeight = 0, rightHeight = 0;
+    int leftDiameter = 0, rightDiameter = 0;
+
+    if (root == NULL) {
+        *height = 0;
+        return 0;
+    }
+
+    leftDiameter = diameter(root->left, &leftHeight);
+    rightDiameter = diameter(root->right, &rightHeight);
+
+    *height = (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+
+    return (leftHeight + rightHeight + 1) > (leftDiameter > rightDiameter ? leftDiameter : rightDiameter) 
+           ? (leftHeight + rightHeight + 1) 
+           : (leftDiameter > rightDiameter ? leftDiameter : rightDiameter);
+}
+
+// Main function to test diameter function
+int main() {
+    // Create a sample tree
+    struct Node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+    root->left->right->left = createNode(6);
+    root->left->right->right = createNode(7);
+
+    int height = 0;
+    int treeDiameter = diameter(root, &height);
+
+    printf(""Diameter of the binary tree is: %d
+"", treeDiameter);
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
+
+// Structure for a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to check if tree is height-balanced
+bool isBalanced(struct Node* root, int* height) {
+    int leftHeight = 0, rightHeight = 0;
+    bool leftBalanced = false, rightBalanced = false;
+
+    if (root == NULL) {
+        *height = 0;
+        return true;
+    }
+
+    leftBalanced = isBalanced(root->left, &leftHeight);
+    rightBalanced = isBalanced(root->right, &rightHeight);
+
+    *height = (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+
+    if (abs(leftHeight - rightHeight) > 1)
+        return false;
+
+    return leftBalanced && rightBalanced;
+}
+
+// Main function to test balanced tree function
+int main() {
+    // Create a balanced tree
+    struct Node* root1 = createNode(1);
+    root1->left = createNode(2);
+    root1->right = createNode(3);
+    root1->left->left = createNode(4);
+    root1->left->right = createNode(5);
+
+    // Create an unbalanced tree
+    struct Node* root2 = createNode(1);
+    root2->left = createNode(2);
+    root2->left->left = createNode(3);
+    root2->left->left->left = createNode(4);
+
+    int height = 0;
+
+    printf(""Tree1 is %s
+"", isBalanced(root1, &height) ? ""balanced"" : ""not balanced"");
+    printf(""Tree2 is %s
+"", isBalanced(root2, &height) ? ""balanced"" : ""not balanced"");
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a tree node with next pointer
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+    struct Node* next; // Pointer to next node at same level
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to connect nodes at same level
+void connectNodesAtSameLevel(struct Node* root) {
+    if (root == NULL)
+        return;
+
+    // Create a queue for level order traversal
+    struct Node* queue[100];
+    int front = 0, rear = 0;
+    queue[rear++] = root;
+
+    while (front < rear) {
+        int levelSize = rear - front;
+        for (int i = 0; i < levelSize; i++) {
+            struct Node* current = queue[front++];
+
+            // Connect to next node in same level
+            if (i < levelSize - 1)
+                current->next = queue[front];
+            else
+                current->next = NULL;
+
+            // Enqueue children
+            if (current->left)
+                queue[rear++] = current->left;
+            if (current->right)
+                queue[rear++] = current->right;
+        }
+    }
+}
+
+// Main function to test connect nodes function
+int main() {
+    // Create a sample tree
+    struct Node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+    root->right->left = createNode(6);
+    root->right->right = createNode(7);
+
+    connectNodesAtSameLevel(root);
+
+    printf(""Connections at same level:
+"");
+    printf(""1 -> %s
+"", root->next ? ""next"" : ""NULL"");
+    printf(""2 -> %d
+"", root->left->next->data);
+    printf(""3 -> %s
+"", root->right->next ? ""next"" : ""NULL"");
+    printf(""4 -> %d
+"", root->left->left->next->data);
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to print nodes at distance k from root
+void printNodesAtDistanceK(struct Node* root, int k) {
+    if (root == NULL)
+        return;
+    if (k == 0) {
+        printf(""%d "", root->data);
+        return;
+    }
+    printNodesAtDistanceK(root->left, k - 1);
+    printNodesAtDistanceK(root->right, k - 1);
+}
+
+// Main function to test nodes at distance function
+int main() {
+    // Create a sample tree
+    struct Node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+    root->right->left = createNode(6);
+    root->right->right = createNode(7);
+
+    int k = 2;
+    printf(""Nodes at distance %d from root: "", k);
+    printNodesAtDistanceK(root, k);
+    printf(""
+"");
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for linked list node
+struct ListNode {
+    int data;
+    struct ListNode* next;
+};
+
+// Structure for tree node
+struct TreeNode {
+    int data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+// Function to create new list node
+struct ListNode* createListNode(int value) {
+    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to create new tree node
+struct TreeNode* createTreeNode(int value) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to count nodes in linked list
+int countListNodes(struct ListNode* head) {
+    int count = 0;
+    while (head != NULL) {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+// Function to convert sorted linked list to BST
+struct TreeNode* sortedListToBST(struct ListNode** head_ref, int n) {
+    if (n <= 0)
+        return NULL;
+
+    // Recursively construct left subtree
+    struct TreeNode* left = sortedListToBST(head_ref, n/2);
+
+    // Allocate memory for root and link left subtree
+    struct TreeNode* root = createTreeNode((*head_ref)->data);
+    root->left = left;
+
+    // Move head pointer to next node
+    *head_ref = (*head_ref)->next;
+
+    // Recursively construct right subtree
+    root->right = sortedListToBST(head_ref, n - n/2 - 1);
+
+    return root;
+}
+
+// Helper function for inorder traversal
+void inorder(struct TreeNode* root) {
+    if (root == NULL)
+        return;
+    inorder(root->left);
+    printf(""%d "", root->data);
+    inorder(root->right);
+}
+
+// Main function to test sorted list to BST function
+int main() {
+    // Create a sorted linked list
+    struct ListNode* head = createListNode(1);
+    head->next = createListNode(2);
+    head->next->next = createListNode(3);
+    head->next->next->next = createListNode(4);
+    head->next->next->next->next = createListNode(5);
+
+    int n = countListNodes(head);
+    struct TreeNode* root = sortedListToBST(&head, n);
+
+    printf(""Inorder traversal of constructed BST: "");
+    inorder(root);
+    printf(""
+"");
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for tree node and doubly linked list node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Global variables for DLL conversion
+struct Node* head = NULL;
+struct Node* prev = NULL;
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to convert binary tree to DLL
+void binaryTreeToDLL(struct Node* root) {
+    if (root == NULL)
+        return;
+
+    // Convert left subtree
+    binaryTreeToDLL(root->left);
+
+    // Process current node
+    if (prev == NULL) {
+        head = root;
+    } else {
+        root->left = prev;
+        prev->right = root;
+    }
+    prev = root;
+
+    // Convert right subtree
+    binaryTreeToDLL(root->right);
+}
+
+// Function to print DLL
+void printDLL(struct Node* head) {
+    while (head != NULL) {
+        printf(""%d "", head->data);
+        head = head->right;
+    }
+    printf(""
+"");
+}
+
+// Main function to test binary tree to DLL function
+int main() {
+    // Create a sample tree
+    struct Node* root = createNode(10);
+    root->left = createNode(12);
+    root->right = createNode(15);
+    root->left->left = createNode(25);
+    root->left->right = createNode(30);
+    root->right->left = createNode(36);
+
+    binaryTreeToDLL(root);
+
+    printf(""Doubly Linked List: "");
+    printDLL(head);
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+// Structure for tree node
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf(""Memory allocation failed!
+"");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to find maximum sum path between two leaves
+int maxSumPathUtil(struct Node* root, int* res) {
+    if (root == NULL)
+        return 0;
+
+    int left = maxSumPathUtil(root->left, res);
+    int right = maxSumPathUtil(root->right, res);
+
+    // Current node's value plus maximum of left and right
+    int current = root->data + (left > right ? left : right);
+
+    // Update result if current node is the root of max sum path
+    if (root->left != NULL && root->right != NULL) {
+        *res = (*res > (root->data + left + right)) ? *res : (root->data + left + right);
+        return current;
+    }
+
+    return (root->left == NULL) ? right + root->data : left + root->data;
+}
+
+// Wrapper function for max sum path
+int maxSumPath(struct Node* root) {
+    int res = INT_MIN;
+    maxSumPathUtil(root, &res);
+    return res;
+}
+
+// Main function to test max sum path function
+int main() {
+    // Create a sample tree
+    struct Node* root = createNode(-15);
+    root->left = createNode(5);
+    root->right = createNode(6);
+    root->left->left = createNode(-8);
+    root->left->right = createNode(1);
+    root->left->left->left = createNode(2);
+    root->left->left->right = createNode(6);
+    root->right->left = createNode(3);
+    root->right->right = createNode(9);
+    root->right->right->right = createNode(0);
+    root->right->right->right->left = createNode(4);
+    root->right->right->right->right = createNode(-1);
+    root->right->right->right->right->left = createNode(10);
+
+    printf(""Maximum sum path between two leaves: %d
+"", maxSumPath(root));
+
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100
+
+// Function to perform DFS
+void DFS(int v, int visited[], int adj[][MAX], int V) {
+    visited[v] = 1;
+    for (int i = 0; i < V; i++) {
+        if (adj[v][i] && !visited[i]) {
+            DFS(i, visited, adj, V);
+        }
+    }
+}
+
+// Function to count connected components
+int countConnectedComponents(int adj[][MAX], int V) {
+    int visited[MAX] = {0};
+    int count = 0;
+
+    for (int v = 0; v < V; v++) {
+        if (!visited[v]) {
+            DFS(v, visited, adj, V);
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+    int V = 5;
+    int adj[MAX][MAX] = {
+        {0, 1, 1, 0, 0},
+        {1, 0, 1, 0, 0},
+        {1, 1, 0, 0, 0},
+        {0, 0, 0, 0, 1},
+        {0, 0, 0, 1, 0}
+    };
+
+    printf(""Number of connected components: %d
+"", 
+           countConnectedComponents(adj, V));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#define ROW 5
+#define COL 5
+
+// Check if cell is valid
+int isSafe(int M[][COL], int row, int col, int visited[][COL]) {
+    return (row >= 0) && (row < ROW) && (col >= 0) && (col < COL) 
+           && (M[row][col] && !visited[row][col]);
+}
+
+// DFS for 2D matrix
+void DFS(int M[][COL], int row, int col, int visited[][COL]) {
+    static int rowNbr[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+    static int colNbr[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+
+    visited[row][col] = 1;
+
+    for (int k = 0; k < 8; k++) {
+        if (isSafe(M, row + rowNbr[k], col + colNbr[k], visited)) {
+            DFS(M, row + rowNbr[k], col + colNbr[k], visited);
+        }
+    }
+}
+
+// Count islands in boolean matrix
+int countIslands(int M[][COL]) {
+    int visited[ROW][COL] = {0};
+    int count = 0;
+
+    for (int i = 0; i < ROW; i++) {
+        for (int j = 0; j < COL; j++) {
+            if (M[i][j] && !visited[i][j]) {
+                DFS(M, i, j, visited);
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+int main() {
+    int M[ROW][COL] = {
+        {1, 1, 0, 0, 0},
+        {0, 1, 0, 0, 1},
+        {1, 0, 0, 1, 1},
+        {0, 0, 0, 0, 0},
+        {1, 0, 1, 0, 1}
+    };
+
+    printf(""Number of islands: %d
+"", countIslands(M));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define MAX 100
+
+// Detect cycle in undirected graph
+bool hasCycleUtil(int v, bool visited[], int parent, int adj[][MAX], int V) {
+    visited[v] = true;
+
+    for (int i = 0; i < V; i++) {
+        if (adj[v][i]) {
+            if (!visited[i]) {
+                if (hasCycleUtil(i, visited, v, adj, V))
+                    return true;
+            }
+            else if (i != parent)
+                return true;
+        }
+    }
+    return false;
+}
+
+bool hasCycle(int adj[][MAX], int V) {
+    bool visited[MAX] = {false};
+
+    for (int u = 0; u < V; u++) {
+        if (!visited[u]) {
+            if (hasCycleUtil(u, visited, -1, adj, V))
+                return true;
+        }
+    }
+    return false;
+}
+
+int main() {
+    int V = 5;
+    int adj[MAX][MAX] = {
+        {0, 1, 0, 0, 0},
+        {1, 0, 1, 1, 0},
+        {0, 1, 0, 0, 1},
+        {0, 1, 0, 0, 1},
+        {0, 0, 1, 1, 0}
+    };
+
+    printf(""Graph %s a cycle.
+"", hasCycle(adj, V) ? ""contains"" : ""does not contain"");
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define MAX 100
+
+// Check if Hamiltonian Path exists
+bool hamPathUtil(int adj[][MAX], int V, int path[], int pos) {
+    if (pos == V) {
+        if (adj[path[pos-1]][path[0]] == 1)
+            return true;
+        else
+            return false;
+    }
+
+    for (int v = 1; v < V; v++) {
+        if (isSafe(v, adj, path, pos)) {
+            path[pos] = v;
+            if (hamPathUtil(adj, V, path, pos+1))
+                return true;
+            path[pos] = -1;
+        }
+    }
+    return false;
+}
+
+bool isSafe(int v, int adj[][MAX], int path[], int pos) {
+    if (adj[path[pos-1]][v] == 0)
+        return false;
+    for (int i = 0; i < pos; i++)
+        if (path[i] == v)
+            return false;
+    return true;
+}
+
+bool hamPath(int adj[][MAX], int V) {
+    int path[MAX];
+    for (int i = 0; i < V; i++)
+        path[i] = -1;
+
+    path[0] = 0;
+    if (!hamPathUtil(adj, V, path, 1)) {
+        printf(""No Hamiltonian Path exists
+"");
+        return false;
+    }
+    return true;
+}
+
+int main() {
+    int V = 5;
+    int adj[MAX][MAX] = {
+        {0, 1, 0, 1, 0},
+        {1, 0, 1, 1, 1},
+        {0, 1, 0, 0, 1},
+        {1, 1, 0, 0, 1},
+        {0, 1, 1, 1, 0}
+    };
+
+    printf(""Hamiltonian Path %s
+"", hamPath(adj, V) ? ""exists"" : ""does not exist"");
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define MAX 100
+
+// Function to check if all tasks can be completed
+bool canFinish(int numTasks, int prerequisites[][2], int prerequisitesSize) {
+    int adj[MAX][MAX] = {0};
+    int inDegree[MAX] = {0};
+
+    // Build adjacency list and in-degree count
+    for (int i = 0; i < prerequisitesSize; i++) {
+        int u = prerequisites[i][1];
+        int v = prerequisites[i][0];
+        adj[u][v] = 1;
+        inDegree[v]++;
+    }
+
+    // Queue for nodes with 0 in-degree
+    int queue[MAX], front = 0, rear = 0;
+    for (int i = 0; i < numTasks; i++) {
+        if (inDegree[i] == 0) {
+            queue[rear++] = i;
+        }
+    }
+
+    int count = 0;
+    while (front < rear) {
+        int u = queue[front++];
+        count++;
+
+        for (int v = 0; v < numTasks; v++) {
+            if (adj[u][v]) {
+                if (--inDegree[v] == 0) {
+                    queue[rear++] = v;
+                }
+            }
+        }
+    }
+
+    return count == numTasks;
+}
+
+int main() {
+    int numTasks = 4;
+    int prerequisites[][2] = {{1,0},{2,1},{3,2}};
+    int prerequisitesSize = 3;
+
+    printf(""All tasks can %s be completed
+"", 
+           canFinish(numTasks, prerequisites, prerequisitesSize) ? """" : ""not"");
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to calculate sum of sum-series of first N natural numbers
+int sumOfSumSeries(int N) {
+    return N * (N + 1) * (N + 2) / 6;
+}
+
+int main() {
+    int N = 5;
+    printf(""Sum of sum-series of first %d natural numbers: %d
+"", N, sumOfSumSeries(N));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Function to check if string is binary
+bool isBinary(char *str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] != '0' && str[i] != '1')
+            return false;
+    }
+    return true;
+}
+
+int main() {
+    char str[] = ""1010102"";
+    printf(""String ""%s"" is %s binary
+"", str, isBinary(str) ? ""a"" : ""not a"");
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to demonstrate if-else decision making
+void checkNumber(int num) {
+    if (num > 0) {
+        printf(""%d is positive
+"", num);
+    } 
+    else if (num < 0) {
+        printf(""%d is negative
+"", num);
+    }
+    else {
+        printf(""Number is zero
+"");
+    }
+}
+
+int main() {
+    int num = -5;
+    checkNumber(num);
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to check if number is odd or even
+void checkOddEven(int num) {
+    if (num % 2 == 0) {
+        printf(""%d is even
+"", num);
+    }
+    else {
+        printf(""%d is odd
+"", num);
+    }
+}
+
+int main() {
+    int num = 7;
+    checkOddEven(num);
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to swap two numbers
+void swapNumbers(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int a = 5, b = 10;
+    printf(""Before swap: a = %d, b = %d
+"", a, b);
+    swapNumbers(&a, &b);
+    printf(""After swap: a = %d, b = %d
+"", a, b);
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to calculate sum of digits
+int sumOfDigits(int num) {
+    int sum = 0;
+    while (num != 0) {
+        sum += num % 10;
+        num /= 10;
+    }
+    return sum;
+}
+
+int main() {
+    int num = 12345;
+    printf(""Sum of digits of %d: %d
+"", num, sumOfDigits(num));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#define ROWS 3
+#define COLS 3
+
+// Function to calculate sum of matrix elements
+int sumOfMatrix(int mat[ROWS][COLS]) {
+    int sum = 0;
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            sum += mat[i][j];
+        }
+    }
+    return sum;
+}
+
+int main() {
+    int mat[ROWS][COLS] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    printf(""Sum of matrix elements: %d
+"", sumOfMatrix(mat));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#include <ctype.h>
+
+// Function to check if character is vowel
+int isVowel(char ch) {
+    ch = tolower(ch);
+    return (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u');
+}
+
+int main() {
+    char ch = 'E';
+    printf(""'%c' is %s vowel
+"", ch, isVowel(ch) ? ""a"" : ""not a"");
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to find greatest of three numbers
+int greatestOfThree(int a, int b, int c) {
+    return (a > b) ? ((a > c) ? a : c) : ((b > c) ? b : c);
+}
+
+int main() {
+    int a = 10, b = 20, c = 15;
+    printf(""Greatest of %d, %d, %d: %d
+"", a, b, c, greatestOfThree(a, b, c));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to convert lowercase to uppercase
+char toUpperCase(char ch) {
+    if (ch >= 'a' && ch <= 'z') {
+        return ch - 32;
+    }
+    return ch;
+}
+
+int main() {
+    char ch = 'h';
+    printf(""Uppercase of '%c': '%c'
+"", ch, toUpperCase(ch));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to print binary representation
+void printBinary(unsigned int num) {
+    if (num > 1) {
+        printBinary(num >> 1);
+    }
+    printf(""%d"", num & 1);
+}
+
+int main() {
+    unsigned int num = 10;
+    printf(""Binary representation of %d: "", num);
+    printBinary(num);
+    printf(""
+"");
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#define SIZE 5
+
+// Function to multiply array elements
+long multiplyArray(int arr[], int n) {
+    long product = 1;
+    for (int i = 0; i < n; i++) {
+        product *= arr[i];
+    }
+    return product;
+}
+
+int main() {
+    int arr[SIZE] = {1, 2, 3, 4, 5};
+    printf(""Product of array elements: %ld
+"", multiplyArray(arr, SIZE));
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+#define SIZE 10
+
+// Function to calculate sum of odd and even elements
+void sumOddEven(int arr[], int n, int *oddSum, int *evenSum) {
+    *oddSum = *evenSum = 0;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] % 2 == 0) {
+            *evenSum += arr[i];
+        }
+        else {
+            *oddSum += arr[i];
+        }
+    }
+}
+
+int main() {
+    int arr[SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int oddSum, evenSum;
+    sumOddEven(arr, SIZE, &oddSum, &evenSum);
+    printf(""Sum of odd elements: %d
+Sum of even elements: %d
+"", oddSum, evenSum);
+    return 0;
+}
+",1
+"
+#include <stdio.h>
+
+// Function to print diamond pattern
+void printDiamond(int n) {
+    int space = n - 1;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < space; j++)
+            printf("" "");
+        for (int j = 0; j <= i; j++)
+            printf(""* "");
+        printf(""
+"");
+        space--;
+    }
+
+    space = 1;
+    for (int i = n-1; i > 0; i--) {
+        for (int j = 0; j < space; j++)
+            printf("" "");
+        for (int j = 0; j < i; j++)
+            printf(""* "");
+        printf(""
+"");
+        space++;
+    }
+}
+
+int main() {
+    int rows = 5;
+    printf(""Diamond pattern:
+"");
+    printDiamond(rows);
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <string.h>
+
+// Function to return maximum of two numbers
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+// Function to find Longest Palindromic Subsequence (LPS)
+int LPS(char str[]) {
+    int n = strlen(str);
+    int dp[n][n];
+
+    // Strings of length 1 are palindromes of length 1
+    for (int i = 0; i < n; i++)
+        dp[i][i] = 1;
+
+    // Build the table
+    for (int cl = 2; cl <= n; cl++) {
+        for (int i = 0; i < n - cl + 1; i++) {
+            int j = i + cl - 1;
+            if (str[i] == str[j] && cl == 2)
+                dp[i][j] = 2;
+            else if (str[i] == str[j])
+                dp[i][j] = 2 + dp[i + 1][j - 1];
+            else
+                dp[i][j] = max(dp[i][j - 1], dp[i + 1][j]);
+        }
+    }
+
+    return dp[0][n - 1];
+}
+
+// Function to calculate minimum insertions to make string palindrome
+int minInsertionsToPalindrome(char str[]) {
+    int n = strlen(str);
+    int lpsLength = LPS(str);
+    return n - lpsLength;
+}
+
+int main() {
+    char str[100];
+    printf(""Enter the string: "");
+    scanf(""%s"", str);
+
+    int result = minInsertionsToPalindrome(str);
+    printf(""Minimum insertions needed to make the string a palindrome: %d
+"", result);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <string.h>
+
+// Function to find the length of the Longest Common Subsequence
+int LCS(char *X, char *Y, int m, int n) {
+    int L[m + 1][n + 1];
+
+    // Build the LCS table in bottom-up fashion
+    for (int i = 0; i <= m; i++) {
+        for (int j = 0; j <= n; j++) {
+            if (i == 0 || j == 0)
+                L[i][j] = 0;
+            else if (X[i - 1] == Y[j - 1])
+                L[i][j] = 1 + L[i - 1][j - 1];
+            else
+                L[i][j] = (L[i - 1][j] > L[i][j - 1]) ? L[i - 1][j] : L[i][j - 1];
+        }
+    }
+
+    return L[m][n];  // Final result: LCS length
+}
+
+int main() {
+    char X[100], Y[100];
+
+    printf(""Enter first string: "");
+    scanf(""%s"", X);
+
+    printf(""Enter second string: "");
+    scanf(""%s"", Y);
+
+    int m = strlen(X);
+    int n = strlen(Y);
+
+    int lcsLength = LCS(X, Y, m, n);
+
+    printf(""Length of Longest Common Subsequence: %d
+"", lcsLength);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+// Structure to represent an edge
+struct Edge {
+    int src, dest, weight;
+};
+
+// Structure to represent a graph
+struct Graph {
+    int V, E;
+    struct Edge edge[MAX];
+};
+
+// Create a graph
+struct Graph* createGraph(int V, int E) {
+    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+    graph->V = V;
+    graph->E = E;
+    return graph;
+}
+
+// DFS to check connectivity
+void DFS(int v, int visited[], int adj[MAX][MAX], int V) {
+    visited[v] = 1;
+    for (int i = 0; i < V; i++) {
+        if (adj[v][i] && !visited[i]) {
+            DFS(i, visited, adj, V);
+        }
+    }
+}
+
+// Check if graph remains connected without a given edge
+int isConnected(int adj[MAX][MAX], int V) {
+    int visited[MAX] = {0};
+
+    // Find first vertex with non-zero degree
+    int i;
+    for (i = 0; i < V; i++) {
+        int hasEdge = 0;
+        for (int j = 0; j < V; j++) {
+            if (adj[i][j]) {
+                hasEdge = 1;
+                break;
+            }
+        }
+        if (hasEdge)
+            break;
+    }
+
+    if (i == V)
+        return 1; // No edges, considered connected
+
+    DFS(i, visited, adj, V);
+
+    // Check if all vertices with non-zero degree are visited
+    for (int u = 0; u < V; u++) {
+        for (int v = 0; v < V; v++) {
+            if (adj[u][v] && !visited[u])
+                return 0;
+        }
+    }
+    return 1;
+}
+
+// Sort edges in decreasing order by weight
+int compare(const void* a, const void* b) {
+    return ((struct Edge*)b)->weight - ((struct Edge*)a)->weight;
+}
+
+// Reverse Delete Algorithm
+int reverseDeleteMST(struct Graph* graph) {
+    int V = graph->V, E = graph->E;
+    struct Edge* edge = graph->edge;
+
+    // Adjacency matrix for checking connectivity
+    int adj[MAX][MAX] = {0};
+
+    // Build initial graph
+    for (int i = 0; i < E; i++) {
+        adj[edge[i].src][edge[i].dest] = edge[i].weight;
+        adj[edge[i].dest][edge[i].src] = edge[i].weight;
+    }
+
+    // Sort edges in decreasing order
+    qsort(edge, E, sizeof(edge[0]), compare);
+
+    int mstWeight = 0;
+
+    for (int i = 0; i < E; i++) {
+        // Remove edge
+        int u = edge[i].src;
+        int v = edge[i].dest;
+        int w = edge[i].weight;
+
+        adj[u][v] = 0;
+        adj[v][u] = 0;
+
+        // Check if still connected
+        if (!isConnected(adj, V)) {
+            // Restore the edge if disconnected
+            adj[u][v] = w;
+            adj[v][u] = w;
+            mstWeight += w;
+        }
+    }
+
+    return mstWeight;
+}
+
+int main() {
+    int V, E;
+    printf(""Enter number of vertices and edges: "");
+    scanf(""%d %d"", &V, &E);
+
+    struct Graph* graph = createGraph(V, E);
+
+    printf(""Enter each edge in format: src dest weight
+"");
+    for (int i = 0; i < E; i++) {
+        scanf(""%d %d %d"", &graph->edge[i].src, &graph->edge[i].dest, &graph->edge[i].weight);
+    }
+
+    int mstWeight = reverseDeleteMST(graph);
+    printf(""Weight of the Minimum Spanning Tree is: %d
+"", mstWeight);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int V, E;
+
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    printf(""Enter number of existing edges: "");
+    scanf(""%d"", &E);
+
+    // Calculate maximum edges possible in a DAG
+    int maxPossible = V * (V - 1) / 2;
+
+    // Remaining edges that can be added
+    int maxAddable = maxPossible - E;
+
+    printf(""Maximum edges that can be added to keep it a DAG: %d
+"", maxAddable);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define MAX 100
+
+int time_counter = 0;
+
+void APUtil(int u, bool visited[], int disc[], int low[], int parent[], bool ap[], int adj[MAX][MAX], int V) {
+    int children = 0;
+    visited[u] = true;
+
+    disc[u] = low[u] = ++time_counter;
+
+    for (int v = 0; v < V; v++) {
+        if (adj[u][v]) {
+            if (!visited[v]) {
+                children++;
+                parent[v] = u;
+                APUtil(v, visited, disc, low, parent, ap, adj, V);
+
+                // Check if the subtree rooted at v has a connection to one of the ancestors of u
+                low[u] = (low[u] < low[v]) ? low[u] : low[v];
+
+                // u is an articulation point in following cases:
+
+                // Case 1: u is root of DFS tree and has two or more children
+                if (parent[u] == -1 && children > 1)
+                    ap[u] = true;
+
+                // Case 2: If u is not root and low value of one of its child is more than discovery value of u
+                if (parent[u] != -1 && low[v] >= disc[u])
+                    ap[u] = true;
+            }
+            else if (v != parent[u]) {
+                // Update low value of u for parent function calls.
+                if (low[u] > disc[v])
+                    low[u] = disc[v];
+            }
+        }
+    }
+}
+
+void findArticulationPoints(int adj[MAX][MAX], int V) {
+    bool visited[MAX];
+    int disc[MAX];
+    int low[MAX];
+    int parent[MAX];
+    bool ap[MAX];
+
+    memset(visited, false, sizeof(visited));
+    memset(ap, false, sizeof(ap));
+    memset(parent, -1, sizeof(parent));
+
+    for (int i = 0; i < V; i++) {
+        if (!visited[i])
+            APUtil(i, visited, disc, low, parent, ap, adj, V);
+    }
+
+    printf(""Articulation points in the graph are:
+"");
+    for (int i = 0; i < V; i++) {
+        if (ap[i])
+            printf(""%d "", i);
+    }
+    printf(""
+"");
+}
+
+int main() {
+    int V;
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    int adj[MAX][MAX];
+    printf(""Enter adjacency matrix (undirected graph):
+"");
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+            scanf(""%d"", &adj[i][j]);
+
+    findArticulationPoints(adj, V);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX 100
+
+// Structure for an edge
+struct Edge {
+    int src, dest;
+};
+
+// Structure for a graph
+struct Graph {
+    int V, E;
+    struct Edge* edge;
+};
+
+// Create a graph with V vertices and E edges
+struct Graph* createGraph(int V, int E) {
+    struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
+    graph->V = V;
+    graph->E = E;
+    graph->edge = (struct Edge*) malloc(E * sizeof(struct Edge));
+    return graph;
+}
+
+// A utility function to find set of an element i (uses path compression)
+int find(int parent[], int i) {
+    if (parent[i] != i)
+        parent[i] = find(parent, parent[i]);
+    return parent[i];
+}
+
+// A utility function to do union of two subsets
+void Union(int parent[], int x, int y) {
+    int xset = find(parent, x);
+    int yset = find(parent, y);
+    parent[xset] = yset;
+}
+
+// Karger's algorithm for finding Minimum Cut
+int kargerMinCut(struct Graph* graph) {
+    int V = graph->V, E = graph->E;
+    struct Edge* edge = graph->edge;
+
+    // Allocate memory for creating V subsets
+    int* parent = (int*) malloc(V * sizeof(int));
+    for (int v = 0; v < V; v++)
+        parent[v] = v;
+
+    int vertices = V;
+
+    // Keep contracting vertices until only two are left
+    while (vertices > 2) {
+        // Pick a random edge
+        int i = rand() % E;
+        int subset1 = find(parent, edge[i].src);
+        int subset2 = find(parent, edge[i].dest);
+
+        // If the two vertices are in different subsets, contract the edge
+        if (subset1 != subset2) {
+            Union(parent, subset1, subset2);
+            vertices--;
+        }
+    }
+
+    // Count the edges connecting the two remaining subsets
+    int cutedges = 0;
+    for (int i = 0; i < E; i++) {
+        int subset1 = find(parent, edge[i].src);
+        int subset2 = find(parent, edge[i].dest);
+        if (subset1 != subset2)
+            cutedges++;
+    }
+
+    free(parent);
+    return cutedges;
+}
+
+int main() {
+    srand(time(NULL)); // Seed for random number generator
+
+    int V = 4; // Number of vertices
+    int E = 5; // Number of edges
+    struct Graph* graph = createGraph(V, E);
+
+    // Add edges
+    graph->edge[0].src = 0; graph->edge[0].dest = 1;
+    graph->edge[1].src = 0; graph->edge[1].dest = 2;
+    graph->edge[2].src = 0; graph->edge[2].dest = 3;
+    graph->edge[3].src = 1; graph->edge[3].dest = 2;
+    graph->edge[4].src = 2; graph->edge[4].dest = 3;
+
+    // Run Karger's algorithm multiple times for higher probability of correct answer
+    int mincut = E;
+    for (int i = 0; i < 50; i++) {
+        int cut = kargerMinCut(graph);
+        if (cut < mincut)
+            mincut = cut;
+    }
+
+    printf(""Minimum cut found by Karger's Algorithm: %d
+"", mincut);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+#define MAX 100
+
+// A utility function to perform BFS and find if there is a path from source to sink
+int bfs(int rGraph[MAX][MAX], int V, int s, int t, int parent[]) {
+    int visited[MAX];
+    memset(visited, 0, sizeof(visited));
+
+    int queue[MAX], front = 0, rear = 0;
+    queue[rear++] = s;
+    visited[s] = 1;
+    parent[s] = -1;
+
+    while (front < rear) {
+        int u = queue[front++];
+
+        for (int v = 0; v < V; v++) {
+            if (!visited[v] && rGraph[u][v] > 0) {
+                queue[rear++] = v;
+                parent[v] = u;
+                visited[v] = 1;
+            }
+        }
+    }
+
+    return visited[t]; // Return true if sink is reachable
+}
+
+// Ford-Fulkerson algorithm to find max flow, which equals max edge-disjoint paths when capacity = 1
+int fordFulkerson(int graph[MAX][MAX], int V, int s, int t) {
+    int u, v;
+
+    // Create residual graph
+    int rGraph[MAX][MAX];
+    for (u = 0; u < V; u++)
+        for (v = 0; v < V; v++)
+            rGraph[u][v] = graph[u][v];
+
+    int parent[MAX]; // To store path
+    int max_flow = 0;
+
+    // Augment the flow while there is a path from source to sink
+    while (bfs(rGraph, V, s, t, parent)) {
+        // Find minimum residual capacity (which is always 1 here)
+        int path_flow = INT_MAX;
+        for (v = t; v != s; v = parent[v]) {
+            u = parent[v];
+            if (rGraph[u][v] < path_flow)
+                path_flow = rGraph[u][v];
+        }
+
+        // Update residual capacities
+        for (v = t; v != s; v = parent[v]) {
+            u = parent[v];
+            rGraph[u][v] -= path_flow;
+            rGraph[v][u] += path_flow;
+        }
+
+        max_flow += path_flow;
+    }
+
+    return max_flow;
+}
+
+int main() {
+    int V, s, t;
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    int graph[MAX][MAX];
+    printf(""Enter adjacency matrix (1 for edge, 0 for no edge):
+"");
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+            scanf(""%d"", &graph[i][j]);
+
+    printf(""Enter source vertex: "");
+    scanf(""%d"", &s);
+    printf(""Enter sink vertex: "");
+    scanf(""%d"", &t);
+
+    int maxPaths = fordFulkerson(graph, V, s, t);
+    printf(""Maximum number of edge-disjoint paths: %d
+"", maxPaths);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+// Queue implementation for BFS
+int queue[MAX], front = -1, rear = -1;
+
+void enqueue(int value) {
+    if (rear == MAX - 1) return;
+    queue[++rear] = value;
+    if (front == -1) front = 0;
+}
+
+int dequeue() {
+    if (front == -1 || front > rear) return -1;
+    return queue[front++];
+}
+
+// Function to check if the graph is bipartite
+bool isBipartite(int graph[MAX][MAX], int V) {
+    int color[V];
+
+    // Initialize all vertices as uncolored (-1)
+    for (int i = 0; i < V; i++) {
+        color[i] = -1;
+    }
+
+    // Check each component of the graph
+    for (int start = 0; start < V; start++) {
+        if (color[start] == -1) {
+            // Start BFS from this vertex
+            enqueue(start);
+            color[start] = 0;
+
+            while (front <= rear) {
+                int u = dequeue();
+
+                for (int v = 0; v < V; v++) {
+                    // If there is an edge and the vertex is not colored
+                    if (graph[u][v] && color[v] == -1) {
+                        color[v] = 1 - color[u];
+                        enqueue(v);
+                    }
+                    // If there is an edge and both vertices have the same color
+                    else if (graph[u][v] && color[v] == color[u]) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+int main() {
+    int V;
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    int graph[MAX][MAX];
+    printf(""Enter adjacency matrix:
+"");
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            scanf(""%d"", &graph[i][j]);
+        }
+    }
+
+    if (isBipartite(graph, V)) {
+        printf(""The graph is Bipartite.
+"");
+    } else {
+        printf(""The graph is NOT Bipartite.
+"");
+    }
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <string.h>
+
+// Function to return maximum of two numbers
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+// Function to find Longest Palindromic Subsequence (LPS)
+int LPS(char str[]) {
+    int n = strlen(str);
+    int dp[n][n];
+
+    // Strings of length 1 are palindromes of length 1
+    for (int i = 0; i < n; i++)
+        dp[i][i] = 1;
+
+    // Build the table
+    for (int cl = 2; cl <= n; cl++) {
+        for (int i = 0; i < n - cl + 1; i++) {
+            int j = i + cl - 1;
+            if (str[i] == str[j] && cl == 2)
+                dp[i][j] = 2;
+            else if (str[i] == str[j])
+                dp[i][j] = 2 + dp[i + 1][j - 1];
+            else
+                dp[i][j] = max(dp[i][j - 1], dp[i + 1][j]);
+        }
+    }
+
+    return dp[0][n - 1];
+}
+
+// Function to calculate minimum insertions to make string palindrome
+int minInsertionsToPalindrome(char str[]) {
+    int n = strlen(str);
+    int lpsLength = LPS(str);
+    return n - lpsLength;
+}
+
+int main() {
+    char str[100];
+    printf(""Enter the string: "");
+    scanf(""%s"", str);
+
+    int result = minInsertionsToPalindrome(str);
+    printf(""Minimum insertions needed to make the string a palindrome: %d
+"", result);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <string.h>
+
+// Function to find the length of the Longest Common Subsequence
+int LCS(char *X, char *Y, int m, int n) {
+    int L[m + 1][n + 1];
+
+    // Build the LCS table in bottom-up fashion
+    for (int i = 0; i <= m; i++) {
+        for (int j = 0; j <= n; j++) {
+            if (i == 0 || j == 0)
+                L[i][j] = 0;
+            else if (X[i - 1] == Y[j - 1])
+                L[i][j] = 1 + L[i - 1][j - 1];
+            else
+                L[i][j] = (L[i - 1][j] > L[i][j - 1]) ? L[i - 1][j] : L[i][j - 1];
+        }
+    }
+
+    return L[m][n];  // Final result: LCS length
+}
+
+int main() {
+    char X[100], Y[100];
+
+    printf(""Enter first string: "");
+    scanf(""%s"", X);
+
+    printf(""Enter second string: "");
+    scanf(""%s"", Y);
+
+    int m = strlen(X);
+    int n = strlen(Y);
+
+    int lcsLength = LCS(X, Y, m, n);
+
+    printf(""Length of Longest Common Subsequence: %d
+"", lcsLength);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+// Structure to represent an edge
+struct Edge {
+    int src, dest, weight;
+};
+
+// Structure to represent a graph
+struct Graph {
+    int V, E;
+    struct Edge edge[MAX];
+};
+
+// Create a graph
+struct Graph* createGraph(int V, int E) {
+    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+    graph->V = V;
+    graph->E = E;
+    return graph;
+}
+
+// DFS to check connectivity
+void DFS(int v, int visited[], int adj[MAX][MAX], int V) {
+    visited[v] = 1;
+    for (int i = 0; i < V; i++) {
+        if (adj[v][i] && !visited[i]) {
+            DFS(i, visited, adj, V);
+        }
+    }
+}
+
+// Check if graph remains connected without a given edge
+int isConnected(int adj[MAX][MAX], int V) {
+    int visited[MAX] = {0};
+
+    // Find first vertex with non-zero degree
+    int i;
+    for (i = 0; i < V; i++) {
+        int hasEdge = 0;
+        for (int j = 0; j < V; j++) {
+            if (adj[i][j]) {
+                hasEdge = 1;
+                break;
+            }
+        }
+        if (hasEdge)
+            break;
+    }
+
+    if (i == V)
+        return 1; // No edges, considered connected
+
+    DFS(i, visited, adj, V);
+
+    // Check if all vertices with non-zero degree are visited
+    for (int u = 0; u < V; u++) {
+        for (int v = 0; v < V; v++) {
+            if (adj[u][v] && !visited[u])
+                return 0;
+        }
+    }
+    return 1;
+}
+
+// Sort edges in decreasing order by weight
+int compare(const void* a, const void* b) {
+    return ((struct Edge*)b)->weight - ((struct Edge*)a)->weight;
+}
+
+// Reverse Delete Algorithm
+int reverseDeleteMST(struct Graph* graph) {
+    int V = graph->V, E = graph->E;
+    struct Edge* edge = graph->edge;
+
+    // Adjacency matrix for checking connectivity
+    int adj[MAX][MAX] = {0};
+
+    // Build initial graph
+    for (int i = 0; i < E; i++) {
+        adj[edge[i].src][edge[i].dest] = edge[i].weight;
+        adj[edge[i].dest][edge[i].src] = edge[i].weight;
+    }
+
+    // Sort edges in decreasing order
+    qsort(edge, E, sizeof(edge[0]), compare);
+
+    int mstWeight = 0;
+
+    for (int i = 0; i < E; i++) {
+        // Remove edge
+        int u = edge[i].src;
+        int v = edge[i].dest;
+        int w = edge[i].weight;
+
+        adj[u][v] = 0;
+        adj[v][u] = 0;
+
+        // Check if still connected
+        if (!isConnected(adj, V)) {
+            // Restore the edge if disconnected
+            adj[u][v] = w;
+            adj[v][u] = w;
+            mstWeight += w;
+        }
+    }
+
+    return mstWeight;
+}
+
+int main() {
+    int V, E;
+    printf(""Enter number of vertices and edges: "");
+    scanf(""%d %d"", &V, &E);
+
+    struct Graph* graph = createGraph(V, E);
+
+    printf(""Enter each edge in format: src dest weight
+"");
+    for (int i = 0; i < E; i++) {
+        scanf(""%d %d %d"", &graph->edge[i].src, &graph->edge[i].dest, &graph->edge[i].weight);
+    }
+
+    int mstWeight = reverseDeleteMST(graph);
+    printf(""Weight of the Minimum Spanning Tree is: %d
+"", mstWeight);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int V, E;
+
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    printf(""Enter number of existing edges: "");
+    scanf(""%d"", &E);
+
+    // Calculate maximum edges possible in a DAG
+    int maxPossible = V * (V - 1) / 2;
+
+    // Remaining edges that can be added
+    int maxAddable = maxPossible - E;
+
+    printf(""Maximum edges that can be added to keep it a DAG: %d
+"", maxAddable);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define MAX 100
+
+int time_counter = 0;
+
+void APUtil(int u, bool visited[], int disc[], int low[], int parent[], bool ap[], int adj[MAX][MAX], int V) {
+    int children = 0;
+    visited[u] = true;
+
+    disc[u] = low[u] = ++time_counter;
+
+    for (int v = 0; v < V; v++) {
+        if (adj[u][v]) {
+            if (!visited[v]) {
+                children++;
+                parent[v] = u;
+                APUtil(v, visited, disc, low, parent, ap, adj, V);
+
+                // Check if the subtree rooted at v has a connection to one of the ancestors of u
+                low[u] = (low[u] < low[v]) ? low[u] : low[v];
+
+                // u is an articulation point in following cases:
+
+                // Case 1: u is root of DFS tree and has two or more children
+                if (parent[u] == -1 && children > 1)
+                    ap[u] = true;
+
+                // Case 2: If u is not root and low value of one of its child is more than discovery value of u
+                if (parent[u] != -1 && low[v] >= disc[u])
+                    ap[u] = true;
+            }
+            else if (v != parent[u]) {
+                // Update low value of u for parent function calls.
+                if (low[u] > disc[v])
+                    low[u] = disc[v];
+            }
+        }
+    }
+}
+
+void findArticulationPoints(int adj[MAX][MAX], int V) {
+    bool visited[MAX];
+    int disc[MAX];
+    int low[MAX];
+    int parent[MAX];
+    bool ap[MAX];
+
+    memset(visited, false, sizeof(visited));
+    memset(ap, false, sizeof(ap));
+    memset(parent, -1, sizeof(parent));
+
+    for (int i = 0; i < V; i++) {
+        if (!visited[i])
+            APUtil(i, visited, disc, low, parent, ap, adj, V);
+    }
+
+    printf(""Articulation points in the graph are:
+"");
+    for (int i = 0; i < V; i++) {
+        if (ap[i])
+            printf(""%d "", i);
+    }
+    printf(""
+"");
+}
+
+int main() {
+    int V;
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    int adj[MAX][MAX];
+    printf(""Enter adjacency matrix (undirected graph):
+"");
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+            scanf(""%d"", &adj[i][j]);
+
+    findArticulationPoints(adj, V);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX 100
+
+// Structure for an edge
+struct Edge {
+    int src, dest;
+};
+
+// Structure for a graph
+struct Graph {
+    int V, E;
+    struct Edge* edge;
+};
+
+// Create a graph with V vertices and E edges
+struct Graph* createGraph(int V, int E) {
+    struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
+    graph->V = V;
+    graph->E = E;
+    graph->edge = (struct Edge*) malloc(E * sizeof(struct Edge));
+    return graph;
+}
+
+// A utility function to find set of an element i (uses path compression)
+int find(int parent[], int i) {
+    if (parent[i] != i)
+        parent[i] = find(parent, parent[i]);
+    return parent[i];
+}
+
+// A utility function to do union of two subsets
+void Union(int parent[], int x, int y) {
+    int xset = find(parent, x);
+    int yset = find(parent, y);
+    parent[xset] = yset;
+}
+
+// Karger's algorithm for finding Minimum Cut
+int kargerMinCut(struct Graph* graph) {
+    int V = graph->V, E = graph->E;
+    struct Edge* edge = graph->edge;
+
+    // Allocate memory for creating V subsets
+    int* parent = (int*) malloc(V * sizeof(int));
+    for (int v = 0; v < V; v++)
+        parent[v] = v;
+
+    int vertices = V;
+
+    // Keep contracting vertices until only two are left
+    while (vertices > 2) {
+        // Pick a random edge
+        int i = rand() % E;
+        int subset1 = find(parent, edge[i].src);
+        int subset2 = find(parent, edge[i].dest);
+
+        // If the two vertices are in different subsets, contract the edge
+        if (subset1 != subset2) {
+            Union(parent, subset1, subset2);
+            vertices--;
+        }
+    }
+
+    // Count the edges connecting the two remaining subsets
+    int cutedges = 0;
+    for (int i = 0; i < E; i++) {
+        int subset1 = find(parent, edge[i].src);
+        int subset2 = find(parent, edge[i].dest);
+        if (subset1 != subset2)
+            cutedges++;
+    }
+
+    free(parent);
+    return cutedges;
+}
+
+int main() {
+    srand(time(NULL)); // Seed for random number generator
+
+    int V = 4; // Number of vertices
+    int E = 5; // Number of edges
+    struct Graph* graph = createGraph(V, E);
+
+    // Add edges
+    graph->edge[0].src = 0; graph->edge[0].dest = 1;
+    graph->edge[1].src = 0; graph->edge[1].dest = 2;
+    graph->edge[2].src = 0; graph->edge[2].dest = 3;
+    graph->edge[3].src = 1; graph->edge[3].dest = 2;
+    graph->edge[4].src = 2; graph->edge[4].dest = 3;
+
+    // Run Karger's algorithm multiple times for higher probability of correct answer
+    int mincut = E;
+    for (int i = 0; i < 50; i++) {
+        int cut = kargerMinCut(graph);
+        if (cut < mincut)
+            mincut = cut;
+    }
+
+    printf(""Minimum cut found by Karger's Algorithm: %d
+"", mincut);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+#define MAX 100
+
+// A utility function to perform BFS and find if there is a path from source to sink
+int bfs(int rGraph[MAX][MAX], int V, int s, int t, int parent[]) {
+    int visited[MAX];
+    memset(visited, 0, sizeof(visited));
+
+    int queue[MAX], front = 0, rear = 0;
+    queue[rear++] = s;
+    visited[s] = 1;
+    parent[s] = -1;
+
+    while (front < rear) {
+        int u = queue[front++];
+
+        for (int v = 0; v < V; v++) {
+            if (!visited[v] && rGraph[u][v] > 0) {
+                queue[rear++] = v;
+                parent[v] = u;
+                visited[v] = 1;
+            }
+        }
+    }
+
+    return visited[t]; // Return true if sink is reachable
+}
+
+// Ford-Fulkerson algorithm to find max flow, which equals max edge-disjoint paths when capacity = 1
+int fordFulkerson(int graph[MAX][MAX], int V, int s, int t) {
+    int u, v;
+
+    // Create residual graph
+    int rGraph[MAX][MAX];
+    for (u = 0; u < V; u++)
+        for (v = 0; v < V; v++)
+            rGraph[u][v] = graph[u][v];
+
+    int parent[MAX]; // To store path
+    int max_flow = 0;
+
+    // Augment the flow while there is a path from source to sink
+    while (bfs(rGraph, V, s, t, parent)) {
+        // Find minimum residual capacity (which is always 1 here)
+        int path_flow = INT_MAX;
+        for (v = t; v != s; v = parent[v]) {
+            u = parent[v];
+            if (rGraph[u][v] < path_flow)
+                path_flow = rGraph[u][v];
+        }
+
+        // Update residual capacities
+        for (v = t; v != s; v = parent[v]) {
+            u = parent[v];
+            rGraph[u][v] -= path_flow;
+            rGraph[v][u] += path_flow;
+        }
+
+        max_flow += path_flow;
+    }
+
+    return max_flow;
+}
+
+int main() {
+    int V, s, t;
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    int graph[MAX][MAX];
+    printf(""Enter adjacency matrix (1 for edge, 0 for no edge):
+"");
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+            scanf(""%d"", &graph[i][j]);
+
+    printf(""Enter source vertex: "");
+    scanf(""%d"", &s);
+    printf(""Enter sink vertex: "");
+    scanf(""%d"", &t);
+
+    int maxPaths = fordFulkerson(graph, V, s, t);
+    printf(""Maximum number of edge-disjoint paths: %d
+"", maxPaths);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+// Queue implementation for BFS
+int queue[MAX], front = -1, rear = -1;
+
+void enqueue(int value) {
+    if (rear == MAX - 1) return;
+    queue[++rear] = value;
+    if (front == -1) front = 0;
+}
+
+int dequeue() {
+    if (front == -1 || front > rear) return -1;
+    return queue[front++];
+}
+
+// Function to check if the graph is bipartite
+bool isBipartite(int graph[MAX][MAX], int V) {
+    int color[V];
+
+    // Initialize all vertices as uncolored (-1)
+    for (int i = 0; i < V; i++) {
+        color[i] = -1;
+    }
+
+    // Check each component of the graph
+    for (int start = 0; start < V; start++) {
+        if (color[start] == -1) {
+            // Start BFS from this vertex
+            enqueue(start);
+            color[start] = 0;
+
+            while (front <= rear) {
+                int u = dequeue();
+
+                for (int v = 0; v < V; v++) {
+                    // If there is an edge and the vertex is not colored
+                    if (graph[u][v] && color[v] == -1) {
+                        color[v] = 1 - color[u];
+                        enqueue(v);
+                    }
+                    // If there is an edge and both vertices have the same color
+                    else if (graph[u][v] && color[v] == color[u]) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+int main() {
+    int V;
+    printf(""Enter number of vertices: "");
+    scanf(""%d"", &V);
+
+    int graph[MAX][MAX];
+    printf(""Enter adjacency matrix:
+"");
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            scanf(""%d"", &graph[i][j]);
+        }
+    }
+
+    if (isBipartite(graph, V)) {
+        printf(""The graph is Bipartite.
+"");
+    } else {
+        printf(""The graph is NOT Bipartite.
+"");
+    }
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int n, i;
+    int sum = 0;
+
+    // Input the value of N
+    printf(""Enter the value of N: "");
+    scanf(""%d"", &n);
+
+    // Calculate the sum of sum-series
+    for (i = 1; i <= n; i++) {
+        sum += (i * (i + 1)) / 2;
+    }
+
+    // Output the result
+    printf(""Sum of sum-series of first %d natural numbers is: %d
+"", n, sum);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    long long num;
+    int isBinary = 1;  // Assume number is binary unless proven otherwise
+
+    // Input the number
+    printf(""Enter a number: "");
+    scanf(""%lld"", &num);
+
+    // Check each digit
+    while (num > 0) {
+        int digit = num % 10;
+
+        if (digit != 0 && digit != 1) {
+            isBinary = 0; // Found a non-binary digit
+            break;
+        }
+
+        num = num / 10; // Remove last digit
+    }
+
+    // Print result
+    if (isBinary)
+        printf(""The number is binary.
+"");
+    else
+        printf(""The number is NOT binary.
+"");
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int num;
+
+    // Input the number
+    printf(""Enter a number: "");
+    scanf(""%d"", &num);
+
+    // Check if even or odd
+    if (num % 2 == 0)
+        printf(""%d is Even.
+"", num);
+    else
+        printf(""%d is Odd.
+"", num);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int a, b, temp;
+
+    // Input two numbers
+    printf(""Enter two numbers: "");
+    scanf(""%d %d"", &a, &b);
+
+    // Swapping using a temporary variable
+    temp = a;
+    a = b;
+    b = temp;
+
+    // Output the result
+    printf(""After swapping: a = %d, b = %d
+"", a, b);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int a, b;
+
+    // Input two numbers
+    printf(""Enter two numbers: "");
+    scanf(""%d %d"", &a, &b);
+
+    // Swapping without a temporary variable
+    a = a + b;
+    b = a - b;
+    a = a - b;
+
+    // Output the result
+    printf(""After swapping: a = %d, b = %d
+"", a, b);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int num, sum = 0, digit;
+
+    // Input a number
+    printf(""Enter a number: "");
+    scanf(""%d"", &num);
+
+    // Calculate the sum of digits
+    while (num != 0) {
+        digit = num % 10;    // Get the last digit
+        sum += digit;        // Add it to sum
+        num = num / 10;      // Remove the last digit
+    }
+
+    // Output the result
+    printf(""Sum of digits = %d
+"", sum);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int num, sum = 0, digit;
+
+    // Input the number
+    printf(""Enter a number: "");
+    scanf(""%d"", &num);
+
+    // Loop to extract and add each digit
+    while (num != 0) {
+        digit = num % 10;    // Get last digit
+        sum += digit;        // Add to sum
+        num = num / 10;      // Remove last digit
+    }
+
+    // Display the result
+    printf(""Sum of digits = %d
+"", sum);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int rows, cols;
+    int i, j, sum = 0;
+
+    // Input the size of the matrix
+    printf(""Enter number of rows and columns: "");
+    scanf(""%d %d"", &rows, &cols);
+
+    int matrix[rows][cols]; // Declare the matrix
+
+    // Input matrix elements
+    printf(""Enter elements of the matrix:
+"");
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            scanf(""%d"", &matrix[i][j]);
+            sum += matrix[i][j];  // Add element to sum
+        }
+    }
+
+    // Output the sum
+    printf(""Sum of all elements = %d
+"", sum);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    char ch;
+
+    // Input a character
+    printf(""Enter a character: "");
+    scanf("" %c"", &ch); // Notice the space before %c to consume any leftover newline
+
+    // Check if vowel (both uppercase and lowercase)
+    if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' ||
+        ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U') {
+        printf(""'%c' is a vowel.
+"", ch);
+    } else {
+        printf(""'%c' is not a vowel.
+"", ch);
+    }
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int a, b, c;
+
+    // Input three numbers
+    printf(""Enter three numbers: "");
+    scanf(""%d %d %d"", &a, &b, &c);
+
+    // Compare and find the largest
+    if (a >= b && a >= c)
+        printf(""The largest number is: %d
+"", a);
+    else if (b >= a && b >= c)
+        printf(""The largest number is: %d
+"", b);
+    else
+        printf(""The largest number is: %d
+"", c);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    char ch;
+
+    // Input a lowercase character
+    printf(""Enter a lowercase character: "");
+    scanf("" %c"", &ch);  // space before %c handles newline
+
+    // Check and convert to uppercase
+    if (ch >= 'a' && ch <= 'z') {
+        ch = ch - 32;  // ASCII value conversion
+        printf(""Uppercase character: %c
+"", ch);
+    } else {
+        printf(""The entered character is not a lowercase letter.
+"");
+    }
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int num, binary[32];  // To store binary digits (max 32 bits for int)
+    int i = 0;
+
+    // Input a decimal number
+    printf(""Enter a decimal number: "");
+    scanf(""%d"", &num);
+
+    // Edge case: if number is 0
+    if (num == 0) {
+        printf(""Binary: 0
+"");
+        return 0;
+    }
+
+    // Convert decimal to binary
+    while (num > 0) {
+        binary[i] = num % 2;
+        num = num / 2;
+        i++;
+    }
+
+    // Print binary digits in reverse order
+    printf(""Binary: "");
+    for (int j = i - 1; j >= 0; j--) {
+        printf(""%d"", binary[j]);
+    }
+    printf(""
+"");
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int n, i;
+    long long product = 1;
+
+    // Input size of array
+    printf(""Enter number of elements: "");
+    scanf(""%d"", &n);
+
+    int arr[n];
+
+    // Input elements of the array
+    printf(""Enter %d elements:
+"", n);
+    for (i = 0; i < n; i++) {
+        scanf(""%d"", &arr[i]);
+        product *= arr[i];  // Multiply each element
+    }
+
+    // Output the result
+    printf(""Product of all elements = %lld
+"", product);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int n, i;
+    int evenSum = 0, oddSum = 0;
+
+    // Input array size
+    printf(""Enter number of elements: "");
+    scanf(""%d"", &n);
+
+    int arr[n];
+
+    // Input array elements
+    printf(""Enter %d elements:
+"", n);
+    for (i = 0; i < n; i++) {
+        scanf(""%d"", &arr[i]);
+
+        // Check even or odd and add to respective sum
+        if (arr[i] % 2 == 0)
+            evenSum += arr[i];
+        else
+            oddSum += arr[i];
+    }
+
+    // Output the results
+    printf(""Sum of even elements = %d
+"", evenSum);
+    printf(""Sum of odd elements = %d
+"", oddSum);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int i, j, space, rows;
+
+    // Input number of rows for the top half
+    printf(""Enter number of rows: "");
+    scanf(""%d"", &rows);
+
+    // Print upper half of the diamond
+    for (i = 1; i <= rows; i++) {
+        // Print leading spaces
+        for (space = 1; space <= rows - i; space++) {
+            printf("" "");
+        }
+        // Print stars
+        for (j = 1; j <= 2 * i - 1; j++) {
+            printf(""*"");
+        }
+        printf(""
+"");
+    }
+
+    // Print lower half of the diamond
+    for (i = rows - 1; i >= 1; i--) {
+        // Print leading spaces
+        for (space = 1; space <= rows - i; space++) {
+            printf("" "");
+        }
+        // Print stars
+        for (j = 1; j <= 2 * i - 1; j++) {
+            printf(""*"");
+        }
+        printf(""
+"");
+    }
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int i, j, rows;
+
+    // Input number of rows
+    printf(""Enter number of rows: "");
+    scanf(""%d"", &rows);
+
+    // Upper half including middle
+    for (i = 1; i <= rows; i++) {
+        for (j = 1; j <= i; j++) {
+            printf(""*"");
+        }
+        printf(""
+"");
+    }
+
+    // Lower half
+    for (i = rows - 1; i >= 1; i--) {
+        for (j = 1; j <= i; j++) {
+            printf(""*"");
+        }
+        printf(""
+"");
+    }
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int n, i;
+
+    // Input array size
+    printf(""Enter number of elements: "");
+    scanf(""%d"", &n);
+
+    int arr[n];
+
+    // Input array elements
+    printf(""Enter %d elements:
+"", n);
+    for (i = 0; i < n; i++) {
+        scanf(""%d"", &arr[i]);
+    }
+
+    // Print alternate elements
+    printf(""Alternate elements of the array:
+"");
+    for (i = 0; i < n; i += 2) {
+        printf(""%d "", arr[i]);
+    }
+
+    printf(""
+"");
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int num, count = 0;
+
+    // Input a number
+    printf(""Enter a number: "");
+    scanf(""%d"", &num);
+
+    // Handle 0 explicitly (it has 1 digit)
+    if (num == 0) {
+        count = 1;
+    } else {
+        // Count digits
+        while (num != 0) {
+            num = num / 10;
+            count++;
+        }
+    }
+
+    // Output the result
+    printf(""Number of digits = %d
+"", count);
+
+    return 0;
+}
+",1
+"#include <stdio.h>
+
+int main() {
+    int n, i, flag = 1;
+
+    // Input the size of array
+    printf(""Enter number of elements: "");
+    scanf(""%d"", &n);
+
+    int arr[n];
+
+    // Input array elements
+    printf(""Enter %d elements:
+"", n);
+    for (i = 0; i < n; i++) {
+        scanf(""%d"", &arr[i]);
+    }
+
+    // Check if array is palindromic
+    for (i = 0; i < n / 2; i++) {
+        if (arr[i] != arr[n - i - 1]) {
+            flag = 0;
+            break;
+        }
+    }
+
+    // Output result
+    if (flag)
+        printf(""The array is palindromic.
+"");
+    else
+        printf(""The array is not palindromic.
+"");
+
+    return 0;
+}
+",1
